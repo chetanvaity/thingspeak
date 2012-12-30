@@ -15,3 +15,13 @@ group :development, :test do
 	gem 'webrat'
 	gem 'annotate'
 end
+
+gem 'thin'
+
+group :assets do
+  gem 'libv8', '~> 3.11.8'
+  gem 'therubyracer'
+  gem 'uglifier'
+  gem 'sass-rails',   '~> 3.2.3'
+  gem 'coffee-rails', '~> 3.2.1'
+end

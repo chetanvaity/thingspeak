@@ -9,6 +9,10 @@ Thingspeak::Application.routes.draw do
 
   root :to => 'pages#home'
 
+  # Create channel route 
+  # TBD bypasses authentication
+  match 'channels/createchannel' => 'channels#create_ch'
+
   resource :user_session
   resource 'account', :to => 'users'
   resources :users do

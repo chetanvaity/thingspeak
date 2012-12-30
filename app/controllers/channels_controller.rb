@@ -1,5 +1,5 @@
 class ChannelsController < ApplicationController
-	before_filter :require_user, :except => [ :show, :post_data ]
+	before_filter :require_user, :except => [ :show, :post_data, :create_ch ]
 	before_filter :set_channels_menu
 	protect_from_forgery :except => :post_data
 	require 'csv'
@@ -34,6 +34,23 @@ class ChannelsController < ApplicationController
     # redirect to edit the newly created channel 
     redirect_to edit_channel_path(channel)
   end
+
+  # AJAX for creating a channel and returning its properties
+  # input: none (can take channel name later); returns: channel id, key
+  # TBD: error catch
+  def create_ch
+    # TBD: Hardcoding user, also removed user authentication in before_filter "require" above
+    current_user = User.find_by_login("chetanv")
+    channel = current_user.channels.create(:field1 => "#{t(:channel_default_field)} 1", :public_flag => TRUE)
+    channel.add_write_api_key
+
+    key = channel.api_keys.write_keys.first.try(:api_key) || ""
+    chid = channel.id
+    data = {:chid => chid, :key =>key}
+
+    render :json => {:data => data}
+  end
+
 
   # clear all data from a channel
   def clear
